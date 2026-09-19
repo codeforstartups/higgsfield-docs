@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Interactive documentation and examples for the Higgsfield API"
+    />
+    <title>Higgsfield Docs</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/swagger-ui-dist@5.17.14/swagger-ui.css"
+    />
+    <style>
+      body {
+        margin: 0;
+        background: #fafafa;
+      }
+
+      .security-notice {
+        box-sizing: border-box;
+        margin: 16px auto 0;
+        max-width: 1320px;
+        padding: 12px 16px;
+        border-left: 4px solid #b45309;
+        background: #fffbeb;
+        color: #78350f;
+        font: 14px/1.5 system-ui, sans-serif;
+      }
+
+      .security-notice strong {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <aside class="security-notice" role="note">
+      <strong>Keep credentials server-side.</strong>
+      Swagger authorization stores your API credential in this browser session.
+      Use “Try it out” only when serving this page locally on a trusted machine.
+      This companion covers the supplementary public OpenAPI catalog, not every
+      model shown in the Higgsfield Console.
+    </aside>
+    <div id="swagger-ui"></div>
+    <script src="https://unpkg.com/swagger-ui-dist@5.17.14/swagger-ui-bundle.js"></script>
+    <script src="https://unpkg.com/swagger-ui-dist@5.17.14/swagger-ui-standalone-preset.js"></script>
+    <script>
+      window.addEventListener("load", () => {
+        SwaggerUIBundle({
+          url: "./openapi.yaml",
+          dom_id: "#swagger-ui",
+          deepLinking: true,
+          displayRequestDuration: true,
+          filter: true,
+          persistAuthorization: false,
+          presets: [
+            SwaggerUIBundle.presets.apis,
+            SwaggerUIStandalonePreset,
+          ],
+          layout: "StandaloneLayout",
+        });
+      });
+    </script>
+  </body>
+</html>

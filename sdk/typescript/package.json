@@ -1,0 +1,20 @@
+{
+  "name": "@example/higgsfield-openapi-companion",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Thin helpers for the Higgsfield models in the public OpenAPI catalog",
+  "exports": "./src/index.ts",
+  "scripts": {
+    "test": "tsx --test tests/*.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@higgsfield/client": "^0.2.6"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}

@@ -1,0 +1,24 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "higgsfield-openapi-companion"
+version = "0.1.0"
+description = "Thin helpers for the Higgsfield models in the public OpenAPI catalog"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = ["higgsfield-client"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.6"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/higgsfield_companion"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py39"

@@ -1,0 +1,491 @@
+openapi: 3.1.0
+info:
+  title: Higgsfield Docs
+  version: 2.0.0
+  description: |
+    Developer-maintained companion to Higgsfield's supplementary public
+    OpenAPI specification. Generation is asynchronous: submit work, store the
+    returned `request_id`, then poll `status_url` or use a webhook.
+
+    **Catalog scope:** this document intentionally contains only operations
+    present in Higgsfield's public `openapi.json` when this portal was built.
+    It is not the complete live model catalog. Confirm model availability in
+    the Higgsfield Console.
+
+    **Credential safety:** Higgsfield credentials are server-side secrets.
+    Swagger UI's authorization feature stores credentials in the browser
+    session, so use "Try it out" only in a trusted local environment.
+  contact:
+    name: Official Higgsfield documentation
+    url: https://docs.higgsfield.ai/docs/
+  license:
+    name: Companion documentation; upstream API terms apply
+    url: https://docs.higgsfield.ai/docs/
+externalDocs:
+  description: Official Higgsfield API documentation
+  url: https://docs.higgsfield.ai/docs/
+servers:
+  - url: https://api.higgsfield.ai
+    description: Production
+security:
+  - authKey: []
+tags:
+  - name: Soul
+    description: Higgsfield image generation.
+  - name: Kling Video
+    description: Kling text-to-video and image-to-video generation.
+  - name: MiniMax
+    description: MiniMax Hailuo text-to-video and image-to-video generation.
+  - name: Requests
+    description: Shared asynchronous request lifecycle operations.
+paths:
+  /higgsfield-ai/soul/standard:
+    post:
+      tags: [Soul]
+      operationId: createSoulStandard
+      summary: Create Soul Standard images
+      description: Submit an asynchronous Soul Standard image request.
+      parameters:
+        - $ref: "#/components/parameters/Webhook"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SoulStandardInput"
+            examples:
+              editorial:
+                value:
+                  prompt: Editorial portrait in soft daylight
+                  num_images: 1
+                  resolution: 2K
+                  aspect_ratio: "4:3"
+      responses:
+        "200":
+          $ref: "#/components/responses/AcceptedRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "422":
+          $ref: "#/components/responses/ValidationError"
+        "500":
+          $ref: "#/components/responses/ServerError"
+  /kling-video/v2.5-turbo/pro/image-to-video:
+    post:
+      tags: [Kling Video]
+      operationId: createKling25TurboProImageToVideo
+      summary: Create Kling 2.5 Turbo Pro video from an image
+      parameters:
+        - $ref: "#/components/parameters/Webhook"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KlingImageToVideoInput"
+            example:
+              prompt: Slow cinematic camera push toward the subject
+              image_url: https://example.com/source.jpg
+              duration: 5
+              cfg_scale: 0.5
+              negative_prompt: blur, distortion
+      responses:
+        "200":
+          $ref: "#/components/responses/AcceptedRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "422":
+          $ref: "#/components/responses/ValidationError"
+        "500":
+          $ref: "#/components/responses/ServerError"
+  /kling-video/v2.5-turbo/pro/text-to-video:
+    post:
+      tags: [Kling Video]
+      operationId: createKling25TurboProTextToVideo
+      summary: Create Kling 2.5 Turbo Pro video from text
+      parameters:
+        - $ref: "#/components/parameters/Webhook"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KlingTextToVideoInput"
+            example:
+              prompt: A paper boat sailing through a neon city at night
+              duration: 5
+              cfg_scale: 0.5
+              negative_prompt: blur, distortion
+      responses:
+        "200":
+          $ref: "#/components/responses/AcceptedRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "422":
+          $ref: "#/components/responses/ValidationError"
+        "500":
+          $ref: "#/components/responses/ServerError"
+  /kling-video/v2.5-turbo/standard/image-to-video:
+    post:
+      tags: [Kling Video]
+      operationId: createKling25TurboStandardImageToVideo
+      summary: Create Kling 2.5 Turbo Standard video from an image
+      parameters:
+        - $ref: "#/components/parameters/Webhook"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KlingImageToVideoInput"
+            example:
+              prompt: Wind moves gently through the scene
+              image_url: https://example.com/source.jpg
+              duration: 5
+              cfg_scale: 0.5
+              negative_prompt: ""
+      responses:
+        "200":
+          $ref: "#/components/responses/AcceptedRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "422":
+          $ref: "#/components/responses/ValidationError"
+        "500":
+          $ref: "#/components/responses/ServerError"
+  /minimax/hailuo-2.3/standard/image-to-video:
+    post:
+      tags: [MiniMax]
+      operationId: createHailuo23StandardImageToVideo
+      summary: Create Hailuo 2.3 Standard video from an image
+      parameters:
+        - $ref: "#/components/parameters/Webhook"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HailuoImageToVideoInput"
+            example:
+              prompt: The camera circles slowly as sunlight changes
+              image_url: https://example.com/source.jpg
+              duration: 6
+              prompt_optimizer: true
+      responses:
+        "200":
+          $ref: "#/components/responses/AcceptedRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "422":
+          $ref: "#/components/responses/ValidationError"
+        "500":
+          $ref: "#/components/responses/ServerError"
+  /minimax/hailuo-2.3/standard/text-to-video:
+    post:
+      tags: [MiniMax]
+      operationId: createHailuo23StandardTextToVideo
+      summary: Create Hailuo 2.3 Standard video from text
+      parameters:
+        - $ref: "#/components/parameters/Webhook"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HailuoTextToVideoInput"
+            example:
+              prompt: A cinematic aerial shot above a misty pine forest
+              duration: 6
+              prompt_optimizer: true
+      responses:
+        "200":
+          $ref: "#/components/responses/AcceptedRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "422":
+          $ref: "#/components/responses/ValidationError"
+        "500":
+          $ref: "#/components/responses/ServerError"
+  /requests/{request_id}/status:
+    get:
+      tags: [Requests]
+      operationId: getRequestStatus
+      summary: Get request status
+      description: |
+        Return the current request state and any completed media. Poll with
+        exponential backoff and jitter until a terminal status is reached.
+      parameters:
+        - $ref: "#/components/parameters/RequestId"
+      responses:
+        "200":
+          description: Current request state and output, when available.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RequestStatus"
+              examples:
+                queued:
+                  value:
+                    status: queued
+                    request_id: d7e6c0f3-6699-4f6c-bb45-2ad7fd9158ff
+                    status_url: https://api.higgsfield.ai/requests/d7e6c0f3-6699-4f6c-bb45-2ad7fd9158ff/status
+                    cancel_url: https://api.higgsfield.ai/requests/d7e6c0f3-6699-4f6c-bb45-2ad7fd9158ff/cancel
+                completedVideo:
+                  value:
+                    status: completed
+                    request_id: d7e6c0f3-6699-4f6c-bb45-2ad7fd9158ff
+                    video:
+                      url: https://cdn.example.com/generated-video.mp4
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/ServerError"
+  /requests/{request_id}/cancel:
+    post:
+      tags: [Requests]
+      operationId: cancelRequest
+      summary: Cancel a queued request
+      description: Cancellation succeeds only before processing starts.
+      parameters:
+        - $ref: "#/components/parameters/RequestId"
+      responses:
+        "202":
+          description: Request canceled successfully. The response has no body.
+        "400":
+          description: The request has started and can no longer be canceled.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+components:
+  securitySchemes:
+    authKey:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: "Server-side only. Format: `Key API_KEY_ID:API_KEY_SECRET`."
+  parameters:
+    RequestId:
+      name: request_id
+      in: path
+      required: true
+      description: UUID returned by a generation submission.
+      schema:
+        type: string
+        format: uuid
+    Webhook:
+      name: hf_webhook
+      in: query
+      required: false
+      description: |
+        Public HTTPS endpoint that receives terminal results. Deliveries may be
+        duplicated; deduplicate by request ID and terminal status.
+      schema:
+        type: string
+        format: uri
+        pattern: ^https://
+  schemas:
+    SoulStandardInput:
+      type: object
+      additionalProperties: false
+      required: [prompt]
+      properties:
+        prompt:
+          type: string
+          minLength: 1
+        num_images:
+          type: integer
+          minimum: 1
+          maximum: 4
+          default: 1
+        resolution:
+          type: string
+          enum: [2K, 4K]
+          default: 2K
+        aspect_ratio:
+          $ref: "#/components/schemas/AspectRatio"
+    KlingTextToVideoInput:
+      type: object
+      additionalProperties: false
+      required: [prompt]
+      properties:
+        prompt:
+          type: string
+          minLength: 1
+        duration:
+          type: integer
+          enum: [5, 10]
+          default: 5
+        cfg_scale:
+          type: number
+          minimum: 0
+          maximum: 1
+          multipleOf: 0.01
+          default: 0.5
+        negative_prompt:
+          type: string
+          default: ""
+    KlingImageToVideoInput:
+      type: object
+      additionalProperties: false
+      required: [prompt, image_url]
+      properties:
+        prompt:
+          type: string
+          minLength: 1
+        image_url:
+          type: string
+          format: uri
+        duration:
+          type: integer
+          enum: [5, 10]
+          default: 5
+        cfg_scale:
+          type: number
+          minimum: 0
+          maximum: 1
+          multipleOf: 0.01
+          default: 0.5
+        negative_prompt:
+          type: string
+          default: ""
+    HailuoTextToVideoInput:
+      type: object
+      additionalProperties: false
+      required: [prompt]
+      properties:
+        prompt:
+          type: string
+          minLength: 1
+        duration:
+          type: integer
+          enum: [6, 10]
+          default: 6
+        prompt_optimizer:
+          type: boolean
+          default: true
+    HailuoImageToVideoInput:
+      type: object
+      additionalProperties: false
+      required: [prompt, image_url]
+      properties:
+        prompt:
+          type: string
+          minLength: 1
+        image_url:
+          type: string
+          format: uri
+        duration:
+          type: integer
+          enum: [6, 10]
+          default: 6
+        prompt_optimizer:
+          type: boolean
+          default: true
+    AspectRatio:
+      type: string
+      enum: ["1:1", "4:3", "3:4", "3:2", "2:3", "5:4", "4:5", "16:9", "9:16", "21:9"]
+      default: "4:3"
+    RequestStatus:
+      type: object
+      required: [status, request_id]
+      properties:
+        status:
+          type: string
+          enum: [queued, in_progress, nsfw, failed, completed, canceled]
+        request_id:
+          type: string
+          format: uuid
+        status_url:
+          type: string
+          format: uri
+        cancel_url:
+          type: string
+          format: uri
+        error:
+          type: [string, "null"]
+        images:
+          type: array
+          items:
+            $ref: "#/components/schemas/MediaOutput"
+        video:
+          $ref: "#/components/schemas/MediaOutput"
+        audio:
+          $ref: "#/components/schemas/MediaOutput"
+        audios:
+          type: array
+          items:
+            $ref: "#/components/schemas/MediaOutput"
+    MediaOutput:
+      type: object
+      additionalProperties: false
+      required: [url]
+      properties:
+        url:
+          type: string
+          format: uri
+    ErrorResponse:
+      type: object
+      required: [detail]
+      properties:
+        detail:
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                type: object
+                additionalProperties: true
+    ErrorResponseString:
+      type: object
+      required: [detail]
+      properties:
+        detail:
+          type: string
+  responses:
+    AcceptedRequest:
+      description: Request accepted for asynchronous processing.
+      headers:
+        X-Correlation-ID:
+          description: Correlation value to retain for support requests.
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RequestStatus"
+          example:
+            status: queued
+            request_id: d7e6c0f3-6699-4f6c-bb45-2ad7fd9158ff
+            status_url: https://api.higgsfield.ai/requests/d7e6c0f3-6699-4f6c-bb45-2ad7fd9158ff/status
+            cancel_url: https://api.higgsfield.ai/requests/d7e6c0f3-6699-4f6c-bb45-2ad7fd9158ff/cancel
+    Unauthorized:
+      description: Missing or invalid API credentials.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponseString"
+          example:
+            detail: Invalid credentials
+    NotFound:
+      description: Resource is unavailable or belongs to another account.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponseString"
+    ValidationError:
+      description: Request body validation failed.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    ServerError:
+      description: Unexpected server error; retry with backoff.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponseString"
