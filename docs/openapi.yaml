@@ -11,10 +11,6 @@ info:
     present in Higgsfield's public `openapi.json` when this portal was built.
     It is not the complete live model catalog. Confirm model availability in
     the Higgsfield Console.
-
-    **Credential safety:** Higgsfield credentials are server-side secrets.
-    Swagger UI's authorization feature stores credentials in the browser
-    session, so use "Try it out" only in a trusted local environment.
   contact:
     name: Official Higgsfield documentation
     url: https://docs.higgsfield.ai/docs/
